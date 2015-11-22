@@ -1,4 +1,5 @@
 #!/bin/bash
+SUM=0
 for PROCID in `find /proc/ -maxdepth 1 -type d | egrep "^/proc/[0-9]" | cut -d / -f 3` ; do
 if [ -f /proc/$PROCID/status ] 
 then
@@ -8,7 +9,8 @@ then
   then 
      PROCNAME=`ps -p $PROCID -o command --no-header`
      echo "$PROCID  - ${SWAPSIZE} Kb ( ${PROCNAME:0:100} )"
+     let SUM=SUM+SWAPSIZE 
   fi
 fi
 done
-
+echo ">> Total Swap usage : $SUM Kb"
